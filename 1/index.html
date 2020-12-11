@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="form">
+        <label for="price">Price</label>
+        <input id="price" name="price" type="text">
+        <label for="sum">Sum</label>
+        <input id="sum" name="sum" type="text">
+        <button class="button" onclick="change()" id="btn">submit</button>
+
+    </div>
+</body>
+<script>
+
+  const priceInput = document.getElementById('price')
+  const sumInput = document.getElementById('sum')
+  const btn = document.getElementById('btn')
+  let box = document.createElement('div')
+  box.classList.add('rest')
+
+
+  const change = () => {
+    let dollarsArr = []
+    let centsArr = []
+    let price = priceInput.value
+    let sum = sumInput.value
+    if(sum>=price){
+
+      let result = sum*100-price*100
+      let resultArr = result.toString().split('')
+      for (let i = 0; i < resultArr.length-2; i++) {
+        dollarsArr.push(resultArr[i])
+      }
+      for (let i = resultArr.length-2; i < resultArr.length; i++) {
+        centsArr.push(resultArr[i])
+      }
+      let dollars = Number(dollarsArr.join(''))
+      let cents = Number(centsArr.join(''))
+      box.textContent = `${dollars}$ ${cents}cents`
+      document.body.appendChild(box)
+    }else{
+      box.textContent = 'Not enough money!'
+
+      document.body.appendChild(box)
+    }
+  }
+
+
+</script>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="d-flex">
+    <div class="formsWrapper width30">
+        <div class="form">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name">
+            <label for="surname">Surname</label>
+            <input type="text" name="surname"  id="surname">
+            <label for="email">Email</label>
+            <input type="email" name="email"  id="email">
+            <button class="button" onclick="add()">ADD+</button>
+        </div>
+        <div class="form">
+            <label for="nameEdit">Name</label>
+            <input type="text" name="nameEdit"  id="nameEdit">
+            <label for="surnameEdit">Surname</label>
+            <input type="text" name="surnameEdit"  id="surnameEdit">
+            <label for="emailEdit">Email</label>
+            <input type="email" name="emailEdit"  id="emailEdit">
+            <button class="button" onclick="saveEditedVal()" >EDIT</button>
+
+        </div>
+    </div>
+
+    <div class="formsWrapper width70">
+        <table id="table" class="table">
+            <thead>
+            <tr>
+                <th>selected</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>Date</th>
+                <th>edit</th>
+                <th>delete</th>
+            </tr>
+            </thead>
+            <tbody id="table-body">
+
+            </tbody>
+        </table>
+
+        <button class="button" onclick="deleteMultiply()">DELETE MULTI</button>
+    </div>
+
+
+
+</div>
+
+
+</body>
+
+<script>
+    let trId = 0
+    let tableBody = document.getElementById('table-body')
+    let nameInput = document.getElementById('name')
+    let surnameInput = document.getElementById('surname')
+    let emailInput = document.getElementById('email')
+    let nameEditInput = document.getElementById('nameEdit')
+    let surnameEditInput = document.getElementById('surnameEdit')
+    let emailEditInput = document.getElementById('emailEdit')
+    const deleteRow = (id) => {
+      let el = document.getElementById(id)
+      el.parentNode.removeChild(el)
+    }
+
+    function getCheckedBoxes(chkboxName) {
+      let checkboxes = document.getElementsByName(chkboxName);
+      let checkboxesChecked = [];
+      for (let i=0; i<checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+          checkboxesChecked.push(checkboxes[i]);
+        }
+      }
+      return checkboxesChecked.length > 0 ? checkboxesChecked : null;
+    }
+
+    const deleteMultiply = () =>{
+      let arrChecked = getCheckedBoxes('deleteCheck')
+      for (const c of arrChecked) {
+        deleteRow(c.value)
+      }
+    }
+
+    let arrForEdit = []
+    let idForEdit = ''
+    const editRow = (id) => {
+
+      let row = document.getElementById(id).children
+      for (let i = 1; i < row.length-3; i++) {
+        arrForEdit.push(row[i].childNodes[0].data)
+        console.log(arrForEdit)
+      }
+      nameEditInput.value = arrForEdit[0]
+      surnameEditInput.value = arrForEdit[1]
+      emailEditInput.value = arrForEdit[2]
+      idForEdit = id
+      arrForEdit = []
+    }
+
+    const saveEditedVal = () =>{
+      let row = document.getElementById(idForEdit).children
+      row[1].textContent = nameEditInput.value
+      row[2].textContent = surnameEditInput.value
+      row[3].textContent = emailEditInput.value
+    }
+
+    const add = () =>{
+      let tr = document.createElement("tr")
+      tr.id = String(trId)
+      let check = document.createElement('input')
+      check.type = 'checkbox'
+      check.value = String(trId)
+      check.name = 'deleteCheck'
+      let editBtn = document.createElement('button')
+      let deleteBtn = document.createElement('button')
+      deleteBtn.textContent = 'delete'
+      deleteBtn.onclick = ()=>(deleteRow(tr.id))
+      editBtn.onclick = ()=>(editRow(tr.id))
+      editBtn.textContent = 'edit'
+
+      let arr = ['check', nameInput.value, surnameInput.value, emailInput.value, new Date(), 'btn', 'delete']
+      for (const el of arr) {
+        let td = document. createElement('td')
+        if(el === 'check'){
+            td.appendChild(check)
+          tr.appendChild(td)
+
+        }
+        else if (el === 'btn'){
+          td.appendChild(editBtn)
+          tr.appendChild(td)
+
+        }
+        else if (el === 'delete'){
+          td.appendChild(deleteBtn)
+          tr.appendChild(td)
+
+        }
+        else{
+          td.textContent = el
+          tr.appendChild(td)
+        }
+
+      }
+      tableBody.appendChild(tr)
+      trId+=1
+    }
+
+
+</script>
+</html>

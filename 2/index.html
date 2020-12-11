@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<button class="button" onclick="show()">OPEN DIALOG</button>
+
+</body>
+<script>
+  let numberId = 0
+
+  const hide = (id) => {
+    let el = document.getElementById(id)
+    el.parentNode.removeChild(el)
+  }
+
+  const show = () => {
+    let dialog = document.createElement('div')
+    let button = document.createElement('button')
+    dialog.classList.add('dialog')
+    button.textContent = 'hide'
+    button.classList.add('button')
+    dialog.id = String(numberId)
+    button.setAttribute('data-dialog', String(numberId))
+    button.onclick = () => (hide(button.dataset.dialog))
+    dialog.appendChild(button)
+    document.body.appendChild(dialog)
+    numberId += 1
+  }
+
+</script>
+</html>
